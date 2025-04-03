@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import ApiResponse from "@/utils/ApiResponse";
 
 const prisma = new PrismaClient();
 
@@ -11,10 +12,13 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(videos, {
-      status: 200,
-      statusText: "fetched all videos successfully",
-    });
+    return NextResponse.json(
+      new ApiResponse(200, "fetched all videos", videos),
+      {
+        status: 200,
+        statusText: "fetched all videos successfully",
+      }
+    );
   } catch (error) {
   } finally {
     await prisma.$disconnect();
