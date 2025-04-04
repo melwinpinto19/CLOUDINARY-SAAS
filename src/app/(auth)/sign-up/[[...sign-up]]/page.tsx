@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import { SignUp, useUser } from '@clerk/nextjs'
+import { SignUp } from "@clerk/nextjs";
 
 export default function Home() {
-  const { user } = useUser()
-
-  if (!user) return <SignUp />
-
-  return <div>Welcome!</div>
+  return (
+    <div className="h-screen w-screen flex items-center justify-center">
+      <SignUp signInUrl="/sign-in" signInForceRedirectUrl="/home" />
+    </div>
+  );
 }
