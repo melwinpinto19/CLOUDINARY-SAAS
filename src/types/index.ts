@@ -8,3 +8,15 @@ export interface videoUploadResponse {
   bytes: number;
   duration?: number;
 }
+
+export interface SingleVideoCard {
+  _id: string;
+  title: string;
+  description: string;
+  publicId: string;
+  originalSize: number;
+  duration: number;
+  compressedSize: number;
+  createdAt: string;
+  updatedAt: string;
+}

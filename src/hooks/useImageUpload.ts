@@ -1,7 +1,7 @@
 "use client";
 import { uploadImage } from "@/api/upload";
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const socialFormats = {
   "Instagram Square (1:1)": { width: 1080, height: 1080, aspectRatio: "1:1" },
@@ -67,6 +67,10 @@ export default function useImageUpload() {
     URL.revokeObjectURL(url);
   };
 
+  useEffect(() => {
+    if (uploadedImage && !transforming) setTransforming(true);
+  }, [selectedFormat, uploadImage]);
+
   return {
     uploading,
     selectedFormat,
@@ -77,5 +81,6 @@ export default function useImageUpload() {
     socialFormats,
     setSelectedFormat,
     uploadedImage,
+    setTransforming,
   };
 }

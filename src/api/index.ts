@@ -17,7 +17,7 @@ class ApiRequest {
   }
 
   // GET request
-  async get(endpoint: string, params: any, headers: AxiosHeaders) {
+  async get(endpoint: string, params: any, headers: any) {
     try {
       const response: AxiosResponse = await this.axiosInstance.get(endpoint, {
         params,

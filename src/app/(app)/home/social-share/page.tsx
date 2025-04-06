@@ -13,6 +13,8 @@ function SocialShare() {
     image,
     uploadedImage,
     handleImageUpload,
+    setTransforming,
+    downloadImage,
   } = useImageUpload();
 
   return (
@@ -26,7 +28,7 @@ function SocialShare() {
       </h2>
 
       {/* main form */}
-      <div className="p-[20px] w-[60%] flex flex-col gap-[20px]">
+      <div className="p-[20px] w-[60%] flex flex-col gap-[30px]">
         {/* file upload input */}
         <div className="flex flex-col gap-[10px]">
           {" "}
@@ -38,38 +40,65 @@ function SocialShare() {
             onChange={handleImageUpload}
           />
         </div>
-
         {/* progress while uploading */}
         {uploading && <progress className="progress w-full"></progress>}
-
         {/* image resolution selection */}
-        <div className="flex flex-col gap-[10px]">
-          {" "}
-          <label htmlFor="select">Select the resolution :</label>
-          <select
-            id="select"
-            className="select select-secondary w-full"
-            onChange={(e) => {
-              setSelectedFormat(e.target.value as keyof typeof socialFormats);
-            }}
-            value={selectedFormat}
-          >
-            <option disabled={true}>Choose the image resolution"</option>
-            {Object.keys(socialFormats).map((option) => (
-              <option key={option} value={option}>{option}</option>
-            ))}
-          </select>
-        </div>
+        {uploadedImage && (
+          <div className="flex flex-col gap-[10px]">
+            {" "}
+            <label htmlFor="select">Select the resolution :</label>
+            <select
+              id="select"
+              className="select select-secondary w-full"
+              onChange={(e) => {
+                setSelectedFormat(e.target.value as keyof typeof socialFormats);
+              }}
+              value={selectedFormat}
+            >
+              <option disabled={true}>Choose the image resolution"</option>
+              {Object.keys(socialFormats).map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {/* image preview */}
         {uploadedImage && (
-          <CldImage
-            alt="cloudinary image"
-            width={socialFormats[selectedFormat].width}
-            height={socialFormats[selectedFormat].height}
-            src={uploadedImage}
-            ref={image}
-          />
+          <div className="relative flex justify-center items-center">
+            <CldImage
+              alt="cloudinary image"
+              width={socialFormats[selectedFormat].width}
+              height={socialFormats[selectedFormat].height}
+              aspectRatio={socialFormats[selectedFormat].aspectRatio}
+              src={uploadedImage || ""}
+              sizes="100vw"
+              crop="fill"
+              gravity="auto"
+              ref={image}
+              onLoad={() => setTransforming(false)}
+            />
+            {transforming && (
+              <div
+                className="flex justify-center items-center  opacity-50 absolute  z-10"
+                style={{
+                  width: socialFormats[selectedFormat].width,
+                  height: socialFormats[selectedFormat].height,
+                }}
+              >
+                <span className="loading loading-ring loading-xl"></span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* download button */}
+        {uploadedImage && (
+          <div className="flex flex-col gap-[10px]" onClick={downloadImage}>
+            <button className="btn btn-primary">Download Image</button>
+          </div>
         )}
       </div>
     </div>
