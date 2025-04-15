@@ -5,7 +5,7 @@ import {
 } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const isPublicRoute = createRouteMatcher(["/sign-in", "/sign-up", "/", "/home"]);
+const isPublicRoute = createRouteMatcher(["/sign-in", "/sign-up", "/"]);
 
 const isPublicApiRoute = createRouteMatcher(["/api/v1/videos"]);
 
@@ -20,13 +20,13 @@ export default clerkMiddleware(async (auth, req) => {
   const isApiRoute = currentURL.pathname.startsWith("/api");
 
   // checking if the authenticated user is trying to access the login and register routes
-  if (isPublicRoute(req) && !isDashboardRoute && userId) {
+  if (isPublicRoute(req) && userId) {
     NextResponse.redirect(new URL("/home", req.url));
   }
 
   // checking if the non authenticated user is trying to access the private route
   if (!isPublicRoute(req) && !userId) {
-    NextResponse.redirect(new URL("/login", req.url));
+    NextResponse.redirect(new URL("/sign-in", req.url));
   }
 
   // checking if the non authenticated user is trying to access the private api route

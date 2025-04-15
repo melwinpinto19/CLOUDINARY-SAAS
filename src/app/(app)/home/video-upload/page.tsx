@@ -60,6 +60,7 @@ function VideoUpload() {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        theme: "dark",
       });
 
       // reset the form:
@@ -76,6 +77,7 @@ function VideoUpload() {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        theme: "dark",
       });
     }
   };
